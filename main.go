@@ -32,24 +32,29 @@ func main() {
 }
 
 func askForArray() []float64 {
-	reader := bufio.NewReader(os.Stdin)
-
 	fmt.Println("Please enter your array with each number separated by a space")
-	fmt.Print("-> ")
-	text, _ := reader.ReadString('\n')
-	text = strings.Replace(text, "\r\n", "", -1)
-	textSlice := strings.Split(text, " ")
-	intSlice := make([]float64, len(textSlice))
+	for {
+		text := prompt()
+		textSlice := strings.Split(text, " ")
+		intSlice := make([]float64, len(textSlice))
 
-	for i, s := range textSlice {
-		a, err := strconv.ParseFloat(s, 32)
-		intSlice[i] = a
-		if err != nil {
-			panic(err)
+		isError := false
+
+		for i, s := range textSlice {
+			a, err := strconv.ParseFloat(s, 32)
+			intSlice[i] = a
+			if err != nil {
+				isError = true
+				break
+			}
+		}
+		sort.Float64s(intSlice)
+		if isError {
+			fmt.Println("Please enter numerical data ONLY separated by a space")
+		} else {
+			return intSlice
 		}
 	}
-	sort.Float64s(intSlice)
-	return intSlice
 }
 
 func getMinMax(data []float64) (float64, float64) {
@@ -63,7 +68,7 @@ func getMedian(data []float64, position float64, multiplyer float64) float64 {
 	if middleNum == float64(int64(middleNum)) {
 		return data[int(middleNum)-1]
 	} else {
-		return (data[int(middleNum-((1/position*multiplyer)+1))] + data[int(middleNum-((1/position*multiplyer)))]) / 2
+		return (data[int(middleNum-((1/position*multiplyer)+1))] + data[int(middleNum-(1/position*multiplyer))]) / 2
 	}
 }
 
@@ -105,7 +110,7 @@ func waitToClose() {
 	}
 	defer func() {
 		_ = keyboard.Close()
-	}()	
+	}()
 	fmt.Println("-----------------------------")
 	fmt.Println("Press the ENTER key to quit")
 	for {
@@ -117,4 +122,13 @@ func waitToClose() {
 			break
 		}
 	}
+}
+
+func prompt() string {
+	reader := bufio.NewReader(os.Stdin)
+	fmt.Print("-> ")
+	text, _ := reader.ReadString('\n')
+	text = strings.Replace(text, "\r\n", "", -1)
+	text = strings.Replace(text, "\n", "", -1)
+	return text
 }
