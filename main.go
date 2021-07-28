@@ -14,7 +14,6 @@ import (
 
 func main() {
 	numbers := askForArray()
-	fmt.Println(numbers)
 	min, max := getMinMax(numbers)
 	median := getMedian(numbers, 2, 1)
 	mean := getMean(numbers)
@@ -61,7 +60,6 @@ func getMinMax(data []float64) (float64, float64) {
 
 func getMedian(data []float64, position float64, multiplyer float64) float64 {
 	middleNum := float64((len(data) + 1)) / position * multiplyer
-	fmt.Println("Index:", middleNum)
 	if middleNum == float64(int64(middleNum)) {
 		return data[int(middleNum)-1]
 	} else {
@@ -92,9 +90,7 @@ func getSD(data []float64) float64 {
 
 func getIQRange(data []float64) float64 {
 	lowQ := getMedian(data, 4, 1)
-	fmt.Println("Q1:", lowQ)
 	highQ := getMedian(data, 4, 3)
-	fmt.Println("Q3:", highQ)
 	return highQ - lowQ
 }
 
