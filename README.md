@@ -3,7 +3,7 @@ Calcs common averages from a list of numbers
 
 Calcultes the following:
 Min,
-Max,,
+Max,
 Median,
 Mean,
 Standard Deviation,
