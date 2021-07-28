@@ -8,6 +8,8 @@ import (
 	"sort"
 	"strconv"
 	"strings"
+
+	"github.com/eiannone/keyboard"
 )
 
 func main() {
@@ -19,13 +21,15 @@ func main() {
 	iqRange := getIQRange(numbers)
 	totalRange := getRange(numbers)
 
-	postResults("Min:", min)
-	postResults("Max:", max)
-	postResults("Median:", median)
-	postResults("Mean", mean)
-	postResults("Standard Deviation:", SD)
-	postResults("Interquartile Range:", iqRange)
-	postResults("Range:", totalRange)
+
+	fmt.Println("Min:", min)
+	fmt.Println("Max:", max)
+	fmt.Println("Median:", median)
+	fmt.Println("Mean", mean)
+	fmt.Println("Standard Deviation:", SD)
+	fmt.Println("Interquartile Range:", iqRange)
+	fmt.Println("Range:", totalRange)
+	waitToClose()
 }
 
 func askForArray() []float64 {
@@ -96,7 +100,22 @@ func getRange(data []float64) float64 {
 	return max - min
 }
 
-func postResults(s string, d float64) {
-	fmt.Println()
-	fmt.Println(s, d)
+func waitToClose() {
+	if err := keyboard.Open(); err != nil {
+		panic(err)
+	}
+	defer func() {
+		_ = keyboard.Close()
+	}()	
+	fmt.Println("-----------------------------")
+	fmt.Println("Press the ENTER key to quit")
+	for {
+		_, key, err := keyboard.GetKey()
+		if err != nil {
+			panic(err)
+		}
+		if key == keyboard.KeyEnter {
+			break
+		}
+	}
 }
